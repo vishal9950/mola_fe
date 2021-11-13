@@ -40,6 +40,19 @@ const App = () => {
     }
   };
 
+  const downloadFile = async () => {
+    const fileName = 'tweets';
+    const json = JSON.stringify(tweets);
+    const blob = new Blob([json], { type: 'application/json' });
+    const href = await URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = href;
+    link.download = `${fileName}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="App">
       <InputGroup className="mb-3">
@@ -53,6 +66,14 @@ const App = () => {
         <Button variant="outline-secondary" id="button-addon2" onClick={() => handleSearchClick()}>
           Search
         </Button>
+        {
+          (tweets.length > 0)
+          && (
+          <Button variant="outline-secondary" id="button-addon2" onClick={() => downloadFile()}>
+            Download
+          </Button>
+          )
+        }
       </InputGroup>
       {
         (tweets.length > 0) && (tweets.map((tweet) => (
